@@ -15,6 +15,7 @@ def dns_checker(domain_list):
     for domains in domain_list:
         try:
             new_item = socket.gethostbyname(domains)
+##            print(new_item)
         except:
             pass
     return None
@@ -24,6 +25,7 @@ def url_filter(url_list):
     for urls in url_list:
         try:
             x = requests.get(urls)
+##            print(x.text)
         except:
             pass
     return None
