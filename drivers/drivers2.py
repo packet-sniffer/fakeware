@@ -1,42 +1,39 @@
 #!c:/Python/python.exe
+
 '''
-This program is used to validate URL FIlters and DNS Filters for command and control
+This program is used to validate DNS filter for test-c2.panw.com
 '''
 
-import subprocess
+import socket
+from time import sleep
 
 
-def read_list(file_txt):
-    with open(file_txt, "r") as f:
-        out_file = f.read().strip().split()
-    return out_file
-
-
-def domain_check(d_list):
-    for domains in d_list:
+def dns_checker(domain_list):
+    for domain in domain_list:
+        print(f'Trying to resolve {domain}', end = '')
+        for i in range(4):
+            print('!', end = '')
+            sleep(1)
         try:
-            #answer = subprocess.run(["nslookup", domains], capture_output = True)
-            result = subprocess.Popen(f"nslookup {domains}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            #print(answer)
-            print(result.communicate())
+            result = socket.gethostbyname(domain)
+            if result == '72.5.65.115':
+                print(f'\nDNS Resolution to {domain} succeeded')
+            else:
+                print(f'\nDNS Resolution to {domain} failed')
         except:
-            pass
-            print(f"Failed {domains}")
+            print(f'\nFailed DNS resolution for {domain}')
 
-def url_check(u_list):
-    for urls in u_list:
-        try:
-            result = subprocess.Popen(f"curl {urls}", shell=True, stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-            print(result.communicate())
-        except:
-            pass
-        print(f"Failed {urls}")
-    
 
 def main():
-    domain_check(read_list("domain_list.txt"))
-    url_check(read_list("url_list.txt"))
+    dns_list = ["test-c2.testpanw.com",
+            "test-dnstun.testpanw.com",
+            "test-malware.testpanw.com"
+    ]
+    dns_checker(dns_list)
+    input('press enter to close the window')
 
 
 if __name__ == "__main__":
     main()
+    
+        
