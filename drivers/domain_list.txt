@@ -1,3 +1,0 @@
-commandandcontrolandbotnet.testcategory.com
-cryptomining.testcategory.com
-malware.testcategory.com
